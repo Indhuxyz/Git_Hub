@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a69ca111-058a-41c8-82f1-0c273bccc65c" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="4f55644c-5e56-491f-81b2-348f274349ea" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="Indhu@143" database="mydb" />
+	</db:config>
+	<flow name="for_eachFlow" doc:id="5a36c03b-4f1b-4c11-a386-0202107c91da" >
+		<http:listener doc:name="Listener" doc:id="0450db98-f581-4b73-9318-64e6589da100" config-ref="HTTP_Listener_config" path="/foreach"/>
+		<db:update doc:name="Update" doc:id="b3a4c861-085b-4fca-8b4c-929e7e8c954f" config-ref="Database_Config">
+			<db:sql ><![CDATA[update mydb.emp set lastname = 'SanjuReddy' where id='101';]]></db:sql>
+		</db:update>
+		<logger level="INFO" doc:name="Logger" doc:id="e3ef6130-dd85-416a-9d34-104ff636e129" message="#[payload]"/>
+	</flow>
+</mule>
